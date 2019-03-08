@@ -114,5 +114,13 @@ function getChildren(opts, finishedCb){
 getChildren(optBuilder(treeRoot), () => {
 	debugger;
 	var treeInstance = new Tree(treeRoot);
-	treeInstance.traverse();
+	var eltsCount = 0;
+	
+	treeInstance.traverse((node) => {
+		console.log(node.getParentNode().value + ", " + node.value + ", " + node.id);
+		eltsCount++;
+	});
+	
+	console.log("HTTP REQUEST COUNT " + reqCount);
+	console.log("ALL ELEMENTS  " + eltsCount);
 });

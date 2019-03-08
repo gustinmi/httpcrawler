@@ -21,7 +21,7 @@ class Node {
         node.setParentNode(this);
         this.children[this.children.length] = node;
 
-        console.log( "PARENT " + this.id +  this.value + " ELT " + node.id + ' - ' + node.value);                                   
+        //console.log( "PARENT " + this.id +  this.value + " ELT " + node.id + ' - ' + node.value);                                   
     }
 
     getChildren () {
@@ -43,23 +43,20 @@ class Tree {
         this.root = value;
     }    
 
-    traverse(){
-        this.traverseTree(this.root);
+    traverse(exp){
+        this.traverseTree(this.root, exp);
     }
 
-    traverseTree(node){
+    traverseTree(node, exp){
         var children = node.getChildren();
         if (children && children.length > 0){
             for(var i = 0; i < children.length; i++) {
-                this.traverseTree(children[i]);
+                this.traverseTree(children[i], exp);
             }
         }else{
-            console.log( node.getParentNode().value + ", " + node.value + ", " + node.id);
+            //console.log( node.getParentNode().value + ", " + node.value + ", " + node.id);
+            exp(node);
         }
-    }
-
-    addChildren(){
-
     }
 
 }
