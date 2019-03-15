@@ -2,6 +2,7 @@ const http = require('http');
 const cheerio = require('cheerio');
 const { Tree, Node } = require('./tree.js');
 
+//const keepAliveAgent = new http.Agent({ keepAlive: true });
 var treeRoot = new Node(null, "root");
 
 function optBuilder(node){
@@ -11,6 +12,7 @@ function optBuilder(node){
 	return {
 		id : catId,
 		node : node,
+//		agent : keepAliveAgent,
 	    httpOptions : {
 		    host: "proxy.gov.si",
 		    port: 80,
@@ -111,16 +113,28 @@ function getChildren(opts, finishedCb){
 
 }
 
-getChildren(optBuilder(treeRoot), () => {
-	debugger;
-	var treeInstance = new Tree(treeRoot);
-	var eltsCount = 0;
-	
-	treeInstance.traverse((node) => {
-		console.log(node.getParentNode().value + ", " + node.value + ", " + node.id);
-		eltsCount++;
+
+try {
+
+	getChildren(optBuilder(treeRoot), () => {
+		debugger;
+		var treeInstance = new Tree(treeRoot); // filled by recursion
+		var eltsCount = 0;
+		
+		treeInstance.toHtml(treeRoot);
+		console.log(treeInstance.getHtmlTree());
+
+		// treeInstance.traverse((node) => {
+		// 	console.log(node.getParentNode().value + ", " + node.value + ", " + node.id);
+		// 	eltsCount++;
+		// });
+		
+		console.log("HTTP REQUEST COUNT " + reqCount);
+		console.log("ALL ELEMENTS  " + eltsCount);
 	});
-	
-	console.log("HTTP REQUEST COUNT " + reqCount);
-	console.log("ALL ELEMENTS  " + eltsCount);
-});
+
+
+} catch(err){
+	debugger;
+	console.log("Error: " + err); 
+}

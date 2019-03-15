@@ -41,6 +41,32 @@ class Tree {
 
     constructor(value){
         this.root = value;
+        this.html = [];
+    }    
+
+    toHtml(node){
+        
+        var children = node.getChildren();
+        if (children && children.length > 0){
+            this.html.push("<ul>");
+            for(var i = 0; i < children.length; i++) {
+                this.toHtml(children[i]);
+            }
+            this.html.push("</ul>");
+        }else{
+            this.html.push("<li>");
+            this.html.push(node.value);
+            this.html.push("</li>");
+        }
+        
+    }
+
+    getHtmlTree(){
+        var res = [];
+        res.push("<ul>");
+        res.push(this.html.join(""));
+        res.push("</ul>");
+        return res.join("");
     }    
 
     traverse(exp){
@@ -58,6 +84,9 @@ class Tree {
             exp(node);
         }
     }
+
+
+
 
 }
 
